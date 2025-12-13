@@ -372,6 +372,75 @@
     }
 
 
+    /* ===== HARDCOPY CARD ===== */
+.hardcard-wrapper {
+  margin: 16px auto 20px;
+  max-width: 420px;
+  text-align: center;
+}
+
+.hardcard {
+  position: relative;
+  height: 640px;
+}
+
+.card-page {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+  opacity: 0;
+  transform: scale(0.96);
+  transition: all 0.6s ease;
+  padding: 10px;
+}
+
+.card-page.active {
+  opacity: 1;
+  transform: scale(1);
+  z-index: 2;
+}
+
+.card-page img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 14px;
+}
+
+.card-page span {
+  display: block;
+  margin-top: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #b2234e;
+}
+
+.card-controls {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.card-controls button {
+  background: linear-gradient(135deg,#ff4b8b,#ff9f43);
+  border: none;
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+}
+
+.card-controls button:hover {
+  transform: scale(1.05);
+}
+
+
+
 
   </style>
 </head>
@@ -480,7 +549,7 @@
         করে তুলতে আপনার স্নেহময় উপস্থিতি ও আশীর্বাদ আমরা 
         আন্তরিকভাবে কামনা করি।<br><br> আপনার শুভাগমন আমাদের আনন্দ
          উৎসবকে আরও সমৃদ্ধ ও মনোরম করে তুলবে—এটাই আমাদের পরম প্রত্যাশা।
-         <br><br> <b>সশ্রদ্ধ,<br>ভৌমিক ও পাল পরিবার</b> </p> </div>
+         <br><br> <b>বিনীত / বিনীতা,<br>শ্রীযুক্ত অলক ভৌমিক ও শ্রীমতি শ্যামলী ভৌমিক</b> </p> </div>
 
       <!-- Details -->
       <h2 class="section-title">📜 স্মারক লিপি</h2>
@@ -511,15 +580,64 @@
 
  
     </div>
+    <!-- HARDCOPY CARD SECTION -->
+<h2 class="section-title">📜 হার্ডকপি আমন্ত্রণ পত্র</h2>
+
+<div class="hardcard-wrapper">
+  <div class="hardcard">
+    <div class="card-page active">
+      <img src="Card Front cover.jpg" alt="Front Cover">
+      <br>
+      <span>পৃষ্ঠা ১ : কার্ডের প্রচ্ছদ</span>
+    </div>
+
+    <div class="card-page">
+      <img src="Card Inside main page.jpg" alt="Inside Page">
+      <br>
+      <span>পৃষ্ঠা ২ : আমন্ত্রণ পত্র</span>
+    </div>
+
+    <div class="card-page">
+      <img src="Card Back  last page.jpg" alt="Back Page">
+      <br>
+      <span>পৃষ্ঠা ৩ : বিবরণ</span>
+    </div>
+  </div>
+  <br>
+  <div class="card-controls">
+    <button onclick="prevPage()">◀ আগের পৃষ্ঠা</button>
+    <button onclick="nextPage()">পরের পৃষ্ঠা ▶</button>
+  </div>
+</div>
+
   </div>
 
 <br>
 <div class="page-signature">
   — Crafted with Love & Elegance  
-  <span>Joyasri Jana</span>
+  <span>J.J</span>
 </div>
 
 
+<script>
+  let currentPage = 0;
+  const pages = document.querySelectorAll(".card-page");
+
+  function showPage(index) {
+    pages.forEach(p => p.classList.remove("active"));
+    pages[index].classList.add("active");
+  }
+
+  function nextPage() {
+    currentPage = (currentPage + 1) % pages.length;
+    showPage(currentPage);
+  }
+
+  function prevPage() {
+    currentPage = (currentPage - 1 + pages.length) % pages.length;
+    showPage(currentPage);
+  }
+</script>
 
 </body>
 </html>
