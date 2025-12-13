@@ -440,6 +440,48 @@
 }
 
 
+/* ===== BOOK FLIP EFFECT ===== */
+.card-page {
+  transform-origin: left center;
+  backface-visibility: hidden;
+}
+
+.card-page.flip-out {
+  animation: flipOut 0.6s forwards;
+}
+
+.card-page.flip-in {
+  animation: flipIn 0.6s forwards;
+}
+
+@keyframes flipOut {
+  from { transform: rotateY(0deg) scale(1); opacity: 1; }
+  to   { transform: rotateY(-90deg) scale(0.95); opacity: 0; }
+}
+
+@keyframes flipIn {
+  from { transform: rotateY(90deg) scale(0.95); opacity: 0; }
+  to   { transform: rotateY(0deg) scale(1); opacity: 1; }
+}
+
+/* ===== FULLSCREEN VIEW ===== */
+.fullscreen {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.92);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  cursor: zoom-out;
+}
+
+.fullscreen img {
+  max-width: 95%;
+  max-height: 95%;
+  border-radius: 14px;
+  box-shadow: 0 0 40px rgba(255,255,255,0.3);
+}
 
 
   </style>
@@ -585,19 +627,19 @@
 
 <div class="hardcard-wrapper">
   <div class="hardcard">
-    <div class="card-page active">
+    <div class="card-page active" onclick="openFullscreen(this)">
       <img src="Card Front cover.jpg" alt="Front Cover">
       <br>
       <span>পৃষ্ঠা ১ : কার্ডের প্রচ্ছদ</span>
     </div>
 
-    <div class="card-page">
+    <div class="card-page" onclick="openFullscreen(this)">
       <img src="Card Inside main page.jpg" alt="Inside Page">
       <br>
       <span>পৃষ্ঠা ২ : আমন্ত্রণ পত্র</span>
     </div>
 
-    <div class="card-page">
+   <div class="card-page" onclick="openFullscreen(this)">
       <img src="Card Back  last page.jpg" alt="Back Page">
       <br>
       <span>পৃষ্ঠা ৩ : বিবরণ</span>
@@ -620,24 +662,45 @@
 
 
 <script>
-  let currentPage = 0;
-  const pages = document.querySelectorAll(".card-page");
+let currentPage = 0;
+const pages = document.querySelectorAll(".card-page");
 
-  function showPage(index) {
-    pages.forEach(p => p.classList.remove("active"));
-    pages[index].classList.add("active");
-  }
+function showPage(index, direction = "next") {
+  const current = pages[currentPage];
+  current.classList.add("flip-out");
 
-  function nextPage() {
-    currentPage = (currentPage + 1) % pages.length;
-    showPage(currentPage);
-  }
+  setTimeout(() => {
+    current.classList.remove("active","flip-out");
 
-  function prevPage() {
-    currentPage = (currentPage - 1 + pages.length) % pages.length;
-    showPage(currentPage);
-  }
+    currentPage = index;
+    const next = pages[currentPage];
+    next.classList.add("active","flip-in");
+
+    setTimeout(() => next.classList.remove("flip-in"), 600);
+  }, 300);
+}
+
+function nextPage() {
+  let next = (currentPage + 1) % pages.length;
+  showPage(next, "next");
+}
+
+function prevPage() {
+  let prev = (currentPage - 1 + pages.length) % pages.length;
+  showPage(prev, "prev");
+}
+
+/* FULLSCREEN */
+function openFullscreen(el){
+  const src = el.querySelector("img").src;
+  const overlay = document.createElement("div");
+  overlay.className = "fullscreen";
+  overlay.innerHTML = `<img src="${src}">`;
+  overlay.onclick = () => overlay.remove();
+  document.body.appendChild(overlay);
+}
 </script>
+
 
 </body>
 </html>
